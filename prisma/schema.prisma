@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleType {
+  PM
+  DEV
+}
+
+enum Status {
+  WISHLIST
+  APPLIED
+  PHONE_SCREEN
+  INTERVIEW
+  TECHNICAL_TEST
+  OFFER
+  REJECTED
+  WITHDRAWN
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model Application {
+  id             String    @id @default(cuid())
+  company        String
+  roleTitle      String
+  roleType       RoleType
+  platformId     String?
+  platform       Platform? @relation(fields: [platformId], references: [id], onDelete: SetNull)
+  jobPostingUrl  String?
+  status         Status    @default(WISHLIST)
+  appliedDate    DateTime?
+  location       String?
+  salaryRange    String?
+  contactName    String?
+  contactEmail   String?
+  cvVersionId    String?
+  cvVersion      CvVersion? @relation(fields: [cvVersionId], references: [id], onDelete: SetNull)
+  notes          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  statusChanges StatusChange[]
+  todos         Todo[]
+}
+
+// Tracks the funnel over time for the dashboard and per-application timeline.
+// Never mutate Application.status without also writing a row here.
+model StatusChange {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  status        Status
+  changedAt     DateTime    @default(now())
+  note          String?
+}
+
+// Singleton — the app always reads/writes the row with id "singleton".
+model CvProfile {
+  id            String   @id @default("singleton")
+  fullName      String   @default("")
+  email         String   @default("")
+  phone         String   @default("")
+  address       String?
+  linkedinUrl   String?
+  portfolioUrl  String?
+  summary       String?
+  skills        Json     @default("[]")
+  experience    Json     @default("[]")
+  education     Json     @default("[]")
+  languages     Json     @default("[]")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// A CV version can carry an uploaded PDF, LaTeX source, or both — see SPEC.md.
+model CvVersion {
+  id            String    @id @default(cuid())
+  label         String
+  filePath      String?
+  latexSource   String?
+  compiledAt    DateTime?
+  compileError  String?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  applications Application[]
+}
+
+model Platform {
+  id       String  @id @default(cuid())
+  name     String
+  url      String?
+  username String?
+  notes    String?
+
+  applications Application[]
+}
+
+model Todo {
+  id            String       @id @default(cuid())
+  title         String
+  description   String?
+  dueDate       DateTime?
+  done          Boolean      @default(false)
+  priority      Priority     @default(MEDIUM)
+  applicationId String?
+  application   Application? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  createdAt     DateTime     @default(now())
+}
