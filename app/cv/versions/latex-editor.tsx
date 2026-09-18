@@ -20,7 +20,7 @@ export default function LatexEditor({
       height="24rem"
       extensions={[latexLanguage]}
       basicSetup={{ lineNumbers: true, foldGutter: true }}
-      className="overflow-hidden rounded-md border border-black/[.08] text-sm dark:border-white/[.145]"
+      className="overflow-hidden rounded-md border border-border text-sm"
     />
   );
 }

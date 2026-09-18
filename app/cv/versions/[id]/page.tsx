@@ -19,7 +19,7 @@ export default async function CvVersionDetailPage(
   return (
     <div className="max-w-2xl space-y-8">
       <div>
-        <Link href="/cv" className="text-sm text-foreground/70 hover:underline">
+        <Link href="/cv" className="text-sm text-muted transition-colors hover:text-primary">
           ← Back to CV / Info
         </Link>
         <h1 className="mt-2 text-2xl font-semibold">{version.label}</h1>
@@ -32,28 +32,28 @@ export default async function CvVersionDetailPage(
             <>
               <a
                 href={`/cv/versions/${version.id}/download`}
-                className="rounded-md border border-black/[.08] px-3 py-1.5 font-medium dark:border-white/[.145]"
+                className="rounded-md border border-border px-3 py-1.5 font-medium text-foreground transition-colors hover:bg-border/40"
               >
                 Download PDF
               </a>
               {stale && (
-                <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
+                <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
                   Stale — source changed since last compile
                 </span>
               )}
               {version.compiledAt && (
-                <span className="text-foreground/50">
+                <span className="text-muted">
                   Compiled {version.compiledAt.toLocaleString()}
                 </span>
               )}
             </>
           ) : (
-            <span className="text-foreground/70">No PDF yet.</span>
+            <span className="text-muted">No PDF yet.</span>
           )}
         </div>
 
         {version.compileError && (
-          <pre className="mt-3 max-h-48 overflow-auto whitespace-pre-wrap rounded-md border border-red-300 bg-red-50 p-3 text-xs text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
+          <pre className="mt-3 max-h-48 overflow-auto whitespace-pre-wrap rounded-md border border-red-300 bg-red-50 p-3 text-xs text-red-800">
             {version.compileError}
           </pre>
         )}
@@ -71,7 +71,7 @@ export default async function CvVersionDetailPage(
           />
           <button
             type="submit"
-            className="rounded-md border border-black/[.08] px-3 py-1.5 text-sm font-medium dark:border-white/[.145]"
+            className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
           >
             Upload PDF
           </button>

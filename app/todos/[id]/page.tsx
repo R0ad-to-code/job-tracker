@@ -34,7 +34,7 @@ export default async function TodoDetailPage(props: PageProps<"/todos/[id]">) {
         />
         <button
           type="submit"
-          className="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           Save changes
         </button>

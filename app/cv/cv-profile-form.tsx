@@ -55,30 +55,22 @@ function toEducationEntries(value: unknown): EducationEntry[] {
   });
 }
 
-function experienceToText(entries: ExperienceEntry[]) {
-  return entries
-    .map((entry) => {
-      const range = [entry.startDate, entry.endDate].filter(Boolean).join(" – ");
-      const header = [entry.title, entry.company].filter(Boolean).join(" @ ");
-      const bulletLines = entry.bullets
-        .split("\n")
-        .map((line) => line.trim())
-        .filter(Boolean)
-        .map((line) => `- ${line}`)
-        .join("\n");
-      return [header, range, bulletLines].filter(Boolean).join("\n");
-    })
-    .join("\n\n");
+function experienceEntryToText(entry: ExperienceEntry) {
+  const range = [entry.startDate, entry.endDate].filter(Boolean).join(" – ");
+  const header = [entry.title, entry.company].filter(Boolean).join(" @ ");
+  const bulletLines = entry.bullets
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => `- ${line}`)
+    .join("\n");
+  return [header, range, bulletLines].filter(Boolean).join("\n");
 }
 
-function educationToText(entries: EducationEntry[]) {
-  return entries
-    .map((entry) => {
-      const range = [entry.startDate, entry.endDate].filter(Boolean).join(" – ");
-      const header = [entry.degree, entry.school].filter(Boolean).join(", ");
-      return [header, range].filter(Boolean).join("\n");
-    })
-    .join("\n\n");
+function educationEntryToText(entry: EducationEntry) {
+  const range = [entry.startDate, entry.endDate].filter(Boolean).join(" – ");
+  const header = [entry.degree, entry.school].filter(Boolean).join(", ");
+  return [header, range].filter(Boolean).join("\n");
 }
 
 export default function CvProfileForm({ profile }: { profile: CvProfile }) {
@@ -125,7 +117,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
     <form action={updateCvProfile} className="space-y-8">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm">
-          <span className="flex items-center justify-between text-foreground/70">
+          <span className="flex items-center justify-between text-muted">
             Full name
             <CopyButton value={fullName} />
           </span>
@@ -138,7 +130,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
           />
         </label>
         <label className="block text-sm">
-          <span className="flex items-center justify-between text-foreground/70">
+          <span className="flex items-center justify-between text-muted">
             Email
             <CopyButton value={email} />
           </span>
@@ -152,7 +144,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
           />
         </label>
         <label className="block text-sm">
-          <span className="flex items-center justify-between text-foreground/70">
+          <span className="flex items-center justify-between text-muted">
             Phone
             <CopyButton value={phone} />
           </span>
@@ -165,7 +157,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
           />
         </label>
         <label className="block text-sm">
-          <span className="flex items-center justify-between text-foreground/70">
+          <span className="flex items-center justify-between text-muted">
             Address
             <CopyButton value={address} />
           </span>
@@ -177,7 +169,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
           />
         </label>
         <label className="block text-sm">
-          <span className="flex items-center justify-between text-foreground/70">
+          <span className="flex items-center justify-between text-muted">
             LinkedIn URL
             <CopyButton value={linkedinUrl} />
           </span>
@@ -190,7 +182,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
           />
         </label>
         <label className="block text-sm">
-          <span className="flex items-center justify-between text-foreground/70">
+          <span className="flex items-center justify-between text-muted">
             Portfolio URL
             <CopyButton value={portfolioUrl} />
           </span>
@@ -205,7 +197,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
       </div>
 
       <label className="block text-sm">
-        <span className="flex items-center justify-between text-foreground/70">
+        <span className="flex items-center justify-between text-muted">
           Summary
           <CopyButton value={summary} />
         </span>
@@ -219,7 +211,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
       </label>
 
       <label className="block text-sm">
-        <span className="flex items-center justify-between text-foreground/70">
+        <span className="flex items-center justify-between text-muted">
           Skills (comma-separated)
           <CopyButton value={skills} />
         </span>
@@ -233,7 +225,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
       </label>
 
       <label className="block text-sm">
-        <span className="flex items-center justify-between text-foreground/70">
+        <span className="flex items-center justify-between text-muted">
           Languages (comma-separated)
           <CopyButton value={languages} />
         </span>
@@ -250,7 +242,6 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-medium">Experience</h2>
           <div className="flex items-center gap-2">
-            <CopyButton value={experienceToText(experience)} label="Copy section" />
             <button
               type="button"
               onClick={() =>
@@ -259,7 +250,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   { title: "", company: "", startDate: "", endDate: "", bullets: "" },
                 ])
               }
-              className="rounded-md border border-black/[.08] px-3 py-1.5 text-sm font-medium dark:border-white/[.145]"
+              className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
             >
               Add experience
             </button>
@@ -270,11 +261,11 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
           {experience.map((entry, index) => (
             <div
               key={index}
-              className="rounded-md border border-black/[.08] p-4 dark:border-white/[.145]"
+              className="rounded-md border border-border bg-surface p-4"
             >
               <div className="grid gap-3 sm:grid-cols-2">
                 <label className="block text-sm">
-                  <span className="text-foreground/70">Title</span>
+                  <span className="text-muted">Title</span>
                   <input
                     value={entry.title}
                     onChange={(e) => updateExperience(index, { title: e.target.value })}
@@ -282,7 +273,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   />
                 </label>
                 <label className="block text-sm">
-                  <span className="text-foreground/70">Company</span>
+                  <span className="text-muted">Company</span>
                   <input
                     value={entry.company}
                     onChange={(e) => updateExperience(index, { company: e.target.value })}
@@ -290,7 +281,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   />
                 </label>
                 <label className="block text-sm">
-                  <span className="text-foreground/70">Start date</span>
+                  <span className="text-muted">Start date</span>
                   <input
                     value={entry.startDate}
                     onChange={(e) => updateExperience(index, { startDate: e.target.value })}
@@ -299,7 +290,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   />
                 </label>
                 <label className="block text-sm">
-                  <span className="text-foreground/70">End date</span>
+                  <span className="text-muted">End date</span>
                   <input
                     value={entry.endDate}
                     onChange={(e) => updateExperience(index, { endDate: e.target.value })}
@@ -309,7 +300,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                 </label>
               </div>
               <label className="mt-3 block text-sm">
-                <span className="text-foreground/70">Bullets (one per line)</span>
+                <span className="text-muted">Bullets (one per line)</span>
                 <textarea
                   rows={3}
                   value={entry.bullets}
@@ -317,13 +308,14 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   className={fieldInputClassName}
                 />
               </label>
-              <div className="mt-3 flex justify-end">
+              <div className="mt-3 flex items-center justify-end gap-3">
+                <CopyButton value={experienceEntryToText(entry)} />
                 <button
                   type="button"
                   onClick={() =>
                     setExperience((entries) => entries.filter((_, i) => i !== index))
                   }
-                  className="text-sm text-red-600 hover:underline dark:text-red-400"
+                  className="text-sm text-danger hover:underline"
                 >
                   Remove
                 </button>
@@ -331,7 +323,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
             </div>
           ))}
           {experience.length === 0 && (
-            <p className="text-sm text-foreground/70">No experience entries yet.</p>
+            <p className="text-sm text-muted">No experience entries yet.</p>
           )}
         </div>
       </section>
@@ -340,7 +332,6 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-medium">Education</h2>
           <div className="flex items-center gap-2">
-            <CopyButton value={educationToText(education)} label="Copy section" />
             <button
               type="button"
               onClick={() =>
@@ -349,7 +340,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   { school: "", degree: "", startDate: "", endDate: "" },
                 ])
               }
-              className="rounded-md border border-black/[.08] px-3 py-1.5 text-sm font-medium dark:border-white/[.145]"
+              className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
             >
               Add education
             </button>
@@ -360,11 +351,11 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
           {education.map((entry, index) => (
             <div
               key={index}
-              className="rounded-md border border-black/[.08] p-4 dark:border-white/[.145]"
+              className="rounded-md border border-border bg-surface p-4"
             >
               <div className="grid gap-3 sm:grid-cols-2">
                 <label className="block text-sm">
-                  <span className="text-foreground/70">School</span>
+                  <span className="text-muted">School</span>
                   <input
                     value={entry.school}
                     onChange={(e) => updateEducation(index, { school: e.target.value })}
@@ -372,7 +363,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   />
                 </label>
                 <label className="block text-sm">
-                  <span className="text-foreground/70">Degree</span>
+                  <span className="text-muted">Degree</span>
                   <input
                     value={entry.degree}
                     onChange={(e) => updateEducation(index, { degree: e.target.value })}
@@ -380,7 +371,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   />
                 </label>
                 <label className="block text-sm">
-                  <span className="text-foreground/70">Start date</span>
+                  <span className="text-muted">Start date</span>
                   <input
                     value={entry.startDate}
                     onChange={(e) => updateEducation(index, { startDate: e.target.value })}
@@ -388,7 +379,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   />
                 </label>
                 <label className="block text-sm">
-                  <span className="text-foreground/70">End date</span>
+                  <span className="text-muted">End date</span>
                   <input
                     value={entry.endDate}
                     onChange={(e) => updateEducation(index, { endDate: e.target.value })}
@@ -396,11 +387,12 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   />
                 </label>
               </div>
-              <div className="mt-3 flex justify-end">
+              <div className="mt-3 flex items-center justify-end gap-3">
+                <CopyButton value={educationEntryToText(entry)} />
                 <button
                   type="button"
                   onClick={() => setEducation((entries) => entries.filter((_, i) => i !== index))}
-                  className="text-sm text-red-600 hover:underline dark:text-red-400"
+                  className="text-sm text-danger hover:underline"
                 >
                   Remove
                 </button>
@@ -408,7 +400,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
             </div>
           ))}
           {education.length === 0 && (
-            <p className="text-sm text-foreground/70">No education entries yet.</p>
+            <p className="text-sm text-muted">No education entries yet.</p>
           )}
         </div>
       </section>
@@ -418,7 +410,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
 
       <button
         type="submit"
-        className="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background"
+        className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
       >
         Save profile
       </button>

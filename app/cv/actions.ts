@@ -7,7 +7,11 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import type { z } from "zod";
 import { prisma } from "@/app/lib/prisma";
+import { anthropic } from "@/app/lib/anthropic";
+import { CvExtractionSchema } from "./cv-extraction-schema";
 import type { Prisma } from "@/app/generated/prisma/client";
 
 const execFileAsync = promisify(execFile);
@@ -210,4 +214,78 @@ export async function compileCvVersion(id: string, formData: FormData) {
 
   revalidatePath(`/cv/versions/${id}`);
   revalidatePath("/cv");
+}
+
+export type AnalyzeCvPdfState = {
+  status: "idle" | "success" | "error";
+  message?: string;
+};
+
+export async function analyzeCvPdf(
+  _prevState: AnalyzeCvPdfState,
+  formData: FormData,
+): Promise<AnalyzeCvPdfState> {
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) {
+    return { status: "error", message: "Choose a PDF file to analyze." };
+  }
+  if (file.type !== "application/pdf") {
+    return { status: "error", message: "Only PDF files can be analyzed." };
+  }
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return {
+      status: "error",
+      message: "ANTHROPIC_API_KEY is not set. Add it to .env to enable PDF analysis.",
+    };
+  }
+
+  const base64 = Buffer.from(await file.arrayBuffer()).toString("base64");
+
+  let extracted: z.infer<typeof CvExtractionSchema>;
+  try {
+    const response = await anthropic.messages.parse({
+      model: "claude-opus-5",
+      max_tokens: 16000,
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "document",
+              source: { type: "base64", media_type: "application/pdf", data: base64 },
+            },
+            {
+              type: "text",
+              text: "Extract this resume/CV into the structured profile fields. Use an empty string or empty array for any field that isn't present in the document. Keep dates in whatever format the document uses (e.g. \"Sept 2024\", \"2021-01\", \"Present\").",
+            },
+          ],
+        },
+      ],
+      output_config: { format: zodOutputFormat(CvExtractionSchema) },
+    });
+
+    if (!response.parsed_output) {
+      return { status: "error", message: "Claude couldn't extract structured data from this PDF." };
+    }
+    extracted = response.parsed_output;
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Unknown error while analyzing the PDF.";
+    return { status: "error", message };
+  }
+
+  const profileData = {
+    ...extracted,
+    experience: extracted.experience as Prisma.InputJsonValue[],
+    education: extracted.education as Prisma.InputJsonValue[],
+  };
+
+  await prisma.cvProfile.upsert({
+    where: { id: "singleton" },
+    create: { id: "singleton", ...profileData },
+    update: profileData,
+  });
+
+  revalidatePath("/cv");
+  return { status: "success", message: "Profile updated from the PDF." };
 }

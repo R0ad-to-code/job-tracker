@@ -46,7 +46,7 @@ export default async function TodosPage(props: PageProps<"/todos">) {
         <h1 className="text-2xl font-semibold">ToDos</h1>
         <Link
           href="/todos/new"
-          className="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           New ToDo
         </Link>
@@ -59,8 +59,8 @@ export default async function TodosPage(props: PageProps<"/todos">) {
             href={key === "all" ? "/todos" : `/todos?filter=${key}`}
             className={`rounded-md px-3 py-1.5 text-sm font-medium ${
               filter === key
-                ? "bg-foreground text-background"
-                : "border border-black/[.08] text-foreground/70 dark:border-white/[.145]"
+                ? "bg-primary text-primary-foreground"
+                : "border border-border text-muted transition-colors hover:bg-border/40"
             }`}
           >
             {FILTER_LABELS[key]}
@@ -69,9 +69,9 @@ export default async function TodosPage(props: PageProps<"/todos">) {
       </div>
 
       {todos.length === 0 ? (
-        <p className="mt-6 text-foreground/70">No ToDos match this filter.</p>
+        <p className="mt-6 text-muted">No ToDos match this filter.</p>
       ) : (
-        <ul className="mt-6 divide-y divide-black/[.08] dark:divide-white/[.145]">
+        <ul className="mt-6 divide-y divide-border">
           {todos.map((todo) => {
             const overdue = !todo.done && todo.dueDate !== null && todo.dueDate < now;
             return (
@@ -82,8 +82,8 @@ export default async function TodosPage(props: PageProps<"/todos">) {
                     aria-label={todo.done ? "Mark not done" : "Mark done"}
                     className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border text-xs ${
                       todo.done
-                        ? "border-foreground bg-foreground text-background"
-                        : "border-black/[.25] dark:border-white/[.3]"
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border"
                     }`}
                   >
                     {todo.done ? "✓" : ""}
@@ -93,7 +93,7 @@ export default async function TodosPage(props: PageProps<"/todos">) {
                   <Link
                     href={`/todos/${todo.id}`}
                     className={`font-medium hover:underline ${
-                      todo.done ? "text-foreground/50 line-through" : ""
+                      todo.done ? "text-muted line-through" : ""
                     }`}
                   >
                     {todo.title}
@@ -103,14 +103,14 @@ export default async function TodosPage(props: PageProps<"/todos">) {
                       {PRIORITY_LABELS[todo.priority]}
                     </span>
                     {todo.dueDate && (
-                      <span className={overdue ? "text-red-600 dark:text-red-400" : "text-foreground/70"}>
+                      <span className={overdue ? "text-danger" : "text-muted"}>
                         Due {todo.dueDate.toLocaleDateString()}
                       </span>
                     )}
                     {todo.application && (
                       <Link
                         href={`/applications/${todo.application.id}`}
-                        className="text-foreground/70 hover:underline"
+                        className="text-muted transition-colors hover:text-primary"
                       >
                         {todo.application.company}
                       </Link>

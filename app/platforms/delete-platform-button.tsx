@@ -11,7 +11,7 @@ export default function DeletePlatformButton({ id }: { id: string }) {
       <button
         type="button"
         onClick={() => setConfirming(true)}
-        className="rounded-md border border-red-300 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950/40"
+        className="rounded-md border border-danger/30 px-3 py-1.5 text-sm font-medium text-danger transition-colors hover:bg-danger/10"
       >
         Delete
       </button>
@@ -20,17 +20,17 @@ export default function DeletePlatformButton({ id }: { id: string }) {
 
   return (
     <form action={deletePlatform.bind(null, id)} className="flex items-center gap-2">
-      <span className="text-sm text-foreground/70">Delete this platform?</span>
+      <span className="text-sm text-muted">Delete this platform?</span>
       <button
         type="submit"
-        className="rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700"
+        className="rounded-md bg-danger px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-danger-hover"
       >
         Confirm
       </button>
       <button
         type="button"
         onClick={() => setConfirming(false)}
-        className="rounded-md border border-black/[.08] px-3 py-1.5 text-sm font-medium dark:border-white/[.145]"
+        className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
       >
         Cancel
       </button>

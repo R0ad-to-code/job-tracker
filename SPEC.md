@@ -13,6 +13,7 @@ A local, single-user web app to organize job applications for **Project Manager*
 - **Tailwind CSS** for styling
 - Server Actions / Route Handlers for CRUD (no separate backend)
 - **Local LaTeX toolchain** (e.g. MacTeX or BasicTeX) providing `pdflatex`/`xelatex` on `PATH` — required only for the in-app "compile CV to PDF" feature; the rest of the app has no dependency on it.
+- **Claude API** (`@anthropic-ai/sdk`, `ANTHROPIC_API_KEY` in `.env`) — required only for the "Import from PDF" feature on `/cv`, which reads an uploaded CV PDF and extracts structured profile data. The only external network call in the app; everything else runs fully offline.
 
 ## Data model
 
@@ -103,7 +104,7 @@ Tasks, optionally linked to a specific application.
 2. **Applications** (`/applications`) — filterable/sortable table (status, roleType, platform, date), search by company/role.
 3. **Application detail** (`/applications/[id]`) — full edit form, status dropdown (writes a StatusChange), notes, linked ToDos, quick-copy of CV fields.
 4. **New application** (`/applications/new`) — quick-add form.
-5. **My CV / Info** (`/cv`) — structured fields with per-field/section copy buttons, PDF upload + list of CV versions with download. Each CV version can also be edited as LaTeX source in an in-app code editor (syntax highlighting, monospace), with a "Compile to PDF" action that runs the local `pdflatex`/`xelatex` toolchain and refreshes the downloadable PDF; compile failures show the compiler's error output inline instead of updating the PDF, and a version whose source changed since the last successful compile is flagged as stale.
+5. **My CV / Info** (`/cv`) — an "Import from PDF" action lets you upload a CV PDF; Claude reads it and fills in the structured profile fields below (overwrites the current profile, with a confirm step). Below that, structured fields with per-field/section copy buttons, PDF upload + list of CV versions with download. Each CV version can also be edited as LaTeX source in an in-app code editor (syntax highlighting, monospace), with a "Compile to PDF" action that runs the local `pdflatex`/`xelatex` toolchain and refreshes the downloadable PDF; compile failures show the compiler's error output inline instead of updating the PDF, and a version whose source changed since the last successful compile is flagged as stale.
 6. **Platforms** (`/platforms`) — manage the list of job boards/links.
 7. **ToDos** (`/todos`) — full task list, filters (overdue/done/all), create standalone or linked to an application.
 

@@ -16,7 +16,7 @@ export default function CvVersionEditor({ version }: { version: CvVersion }) {
     <form action={saveWithId} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm">
-          <span className="text-foreground/70">Label</span>
+          <span className="text-muted">Label</span>
           <input
             name="label"
             required
@@ -25,7 +25,7 @@ export default function CvVersionEditor({ version }: { version: CvVersion }) {
           />
         </label>
         <label className="block text-sm">
-          <span className="text-foreground/70">Notes</span>
+          <span className="text-muted">Notes</span>
           <input
             name="notes"
             defaultValue={version.notes ?? ""}
@@ -35,7 +35,7 @@ export default function CvVersionEditor({ version }: { version: CvVersion }) {
       </div>
 
       <div>
-        <span className="block text-sm text-foreground/70">LaTeX source</span>
+        <span className="block text-sm text-muted">LaTeX source</span>
         <div className="mt-1">
           <LatexEditor value={latexSource} onChange={setLatexSource} />
         </div>
@@ -45,14 +45,14 @@ export default function CvVersionEditor({ version }: { version: CvVersion }) {
       <div className="flex flex-wrap gap-3">
         <button
           type="submit"
-          className="rounded-md border border-black/[.08] px-4 py-2 text-sm font-medium dark:border-white/[.145]"
+          className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
         >
           Save
         </button>
         <button
           type="submit"
           formAction={compileWithId}
-          className="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           Save &amp; compile to PDF
         </button>

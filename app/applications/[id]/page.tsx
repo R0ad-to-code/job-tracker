@@ -38,7 +38,7 @@ export default async function ApplicationDetailPage(
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold">{application.roleTitle}</h1>
-          <p className="text-foreground/70">{application.company}</p>
+          <p className="text-muted">{application.company}</p>
         </div>
         <DeleteApplicationButton id={application.id} />
       </div>
@@ -50,7 +50,7 @@ export default async function ApplicationDetailPage(
           className="mt-3 flex flex-wrap items-end gap-3"
         >
           <div>
-            <label className="block text-sm text-foreground/70" htmlFor="status">
+            <label className="block text-sm text-muted" htmlFor="status">
               Status
             </label>
             <select
@@ -67,7 +67,7 @@ export default async function ApplicationDetailPage(
             </select>
           </div>
           <div className="min-w-[12rem] flex-1">
-            <label className="block text-sm text-foreground/70" htmlFor="note">
+            <label className="block text-sm text-muted" htmlFor="note">
               Note (optional)
             </label>
             <input
@@ -79,7 +79,7 @@ export default async function ApplicationDetailPage(
           </div>
           <button
             type="submit"
-            className="rounded-md border border-black/[.08] px-4 py-2 text-sm font-medium dark:border-white/[.145]"
+            className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
           >
             Update status
           </button>
@@ -89,13 +89,13 @@ export default async function ApplicationDetailPage(
           <ul className="mt-4 space-y-2 text-sm">
             {application.statusChanges.map((change) => (
               <li key={change.id} className="flex justify-between gap-4">
-                <span className="text-foreground/70">
+                <span className="text-muted">
                   <span className="font-medium text-foreground">
                     {STATUS_LABELS[change.status]}
                   </span>
                   {change.note ? ` — ${change.note}` : ""}
                 </span>
-                <span className="shrink-0 text-foreground/50">
+                <span className="shrink-0 text-muted">
                   {change.changedAt.toLocaleDateString()}
                 </span>
               </li>
@@ -130,7 +130,7 @@ export default async function ApplicationDetailPage(
           />
           <button
             type="submit"
-            className="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
           >
             Save changes
           </button>
@@ -141,7 +141,7 @@ export default async function ApplicationDetailPage(
         <h2 className="text-lg font-medium">ToDos</h2>
 
         {todos.length > 0 && (
-          <ul className="mt-3 divide-y divide-black/[.08] dark:divide-white/[.145]">
+          <ul className="mt-3 divide-y divide-border">
             {todos.map((todo) => {
               const overdue = !todo.done && todo.dueDate !== null && todo.dueDate < now;
               return (
@@ -152,8 +152,8 @@ export default async function ApplicationDetailPage(
                       aria-label={todo.done ? "Mark not done" : "Mark done"}
                       className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border text-xs ${
                         todo.done
-                          ? "border-foreground bg-foreground text-background"
-                          : "border-black/[.25] dark:border-white/[.3]"
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border"
                       }`}
                     >
                       {todo.done ? "✓" : ""}
@@ -163,7 +163,7 @@ export default async function ApplicationDetailPage(
                     <Link
                       href={`/todos/${todo.id}`}
                       className={`font-medium hover:underline ${
-                        todo.done ? "text-foreground/50 line-through" : ""
+                        todo.done ? "text-muted line-through" : ""
                       }`}
                     >
                       {todo.title}
@@ -173,7 +173,7 @@ export default async function ApplicationDetailPage(
                         {PRIORITY_LABELS[todo.priority]}
                       </span>
                       {todo.dueDate && (
-                        <span className={overdue ? "text-red-600 dark:text-red-400" : "text-foreground/70"}>
+                        <span className={overdue ? "text-danger" : "text-muted"}>
                           Due {todo.dueDate.toLocaleDateString()}
                         </span>
                       )}
@@ -190,7 +190,7 @@ export default async function ApplicationDetailPage(
           className="mt-4 flex flex-wrap items-end gap-3"
         >
           <div className="min-w-[12rem] flex-1">
-            <label className="block text-sm text-foreground/70" htmlFor="todo-title">
+            <label className="block text-sm text-muted" htmlFor="todo-title">
               New ToDo
             </label>
             <input
@@ -202,7 +202,7 @@ export default async function ApplicationDetailPage(
             />
           </div>
           <div>
-            <label className="block text-sm text-foreground/70" htmlFor="todo-dueDate">
+            <label className="block text-sm text-muted" htmlFor="todo-dueDate">
               Due date
             </label>
             <input
@@ -213,7 +213,7 @@ export default async function ApplicationDetailPage(
             />
           </div>
           <div>
-            <label className="block text-sm text-foreground/70" htmlFor="todo-priority">
+            <label className="block text-sm text-muted" htmlFor="todo-priority">
               Priority
             </label>
             <select id="todo-priority" name="priority" defaultValue="MEDIUM" className={fieldInputClassName}>
@@ -224,7 +224,7 @@ export default async function ApplicationDetailPage(
           </div>
           <button
             type="submit"
-            className="rounded-md border border-black/[.08] px-4 py-2 text-sm font-medium dark:border-white/[.145]"
+            className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
           >
             Add ToDo
           </button>
