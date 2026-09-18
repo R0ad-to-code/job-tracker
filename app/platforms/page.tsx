@@ -30,7 +30,14 @@ export default async function PlatformsPage() {
                   {platform.name}
                 </Link>
                 {platform.url && (
-                  <p className="text-sm text-muted">{platform.url}</p>
+                  <a
+                    href={platform.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-sm text-muted transition-colors hover:text-primary"
+                  >
+                    {platform.url}
+                  </a>
                 )}
               </div>
               {platform.username && (

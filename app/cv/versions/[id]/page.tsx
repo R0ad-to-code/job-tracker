@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/app/lib/prisma";
 import { uploadCvVersionFile } from "../../actions";
 import CvVersionEditor from "../cv-version-editor";
+import DeleteCvVersionButton from "../delete-cv-version-button";
 
 export default async function CvVersionDetailPage(
   props: PageProps<"/cv/versions/[id]">,
@@ -18,11 +19,14 @@ export default async function CvVersionDetailPage(
 
   return (
     <div className="max-w-2xl space-y-8">
-      <div>
-        <Link href="/cv" className="text-sm text-muted transition-colors hover:text-primary">
-          ← Back to CV / Info
-        </Link>
-        <h1 className="mt-2 text-2xl font-semibold">{version.label}</h1>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <Link href="/cv" className="text-sm text-muted transition-colors hover:text-primary">
+            ← Back to CV / Info
+          </Link>
+          <h1 className="mt-2 text-2xl font-semibold">{version.label}</h1>
+        </div>
+        <DeleteCvVersionButton id={version.id} />
       </div>
 
       <section>

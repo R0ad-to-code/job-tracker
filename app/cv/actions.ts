@@ -1,17 +1,14 @@
 "use server";
 
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, unlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
-import type { z } from "zod";
 import { prisma } from "@/app/lib/prisma";
-import { anthropic } from "@/app/lib/anthropic";
-import { CvExtractionSchema } from "./cv-extraction-schema";
+import { parseCvPdf } from "./pdf-parser";
 import type { Prisma } from "@/app/generated/prisma/client";
 
 const execFileAsync = promisify(execFile);
@@ -93,6 +90,7 @@ export async function saveCvVersionDetails(id: string, formData: FormData) {
       label,
       notes: readOptionalString(formData, "notes"),
       latexSource: readOptionalString(formData, "latexSource"),
+      compileError: null,
     },
   });
 
@@ -119,6 +117,20 @@ export async function uploadCvVersionFile(id: string, formData: FormData) {
 
   revalidatePath("/cv");
   revalidatePath(`/cv/versions/${id}`);
+}
+
+export async function deleteCvVersion(id: string) {
+  const version = await prisma.cvVersion.findUnique({ where: { id }, select: { filePath: true } });
+
+  await prisma.cvVersion.delete({ where: { id } });
+
+  if (version?.filePath) {
+    const uploadsDir = path.join(process.cwd(), "data", "uploads");
+    await unlink(path.join(uploadsDir, version.filePath)).catch(() => {});
+  }
+
+  revalidatePath("/cv");
+  redirect("/cv");
 }
 
 const LATEX_COMPILERS = ["pdflatex", "xelatex"] as const;
@@ -232,46 +244,23 @@ export async function analyzeCvPdf(
   if (file.type !== "application/pdf") {
     return { status: "error", message: "Only PDF files can be analyzed." };
   }
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return {
-      status: "error",
-      message: "ANTHROPIC_API_KEY is not set. Add it to .env to enable PDF analysis.",
-    };
-  }
+  const buffer = Buffer.from(await file.arrayBuffer());
 
-  const base64 = Buffer.from(await file.arrayBuffer()).toString("base64");
-
-  let extracted: z.infer<typeof CvExtractionSchema>;
+  let extracted;
   try {
-    const response = await anthropic.messages.parse({
-      model: "claude-opus-5",
-      max_tokens: 16000,
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "document",
-              source: { type: "base64", media_type: "application/pdf", data: base64 },
-            },
-            {
-              type: "text",
-              text: "Extract this resume/CV into the structured profile fields. Use an empty string or empty array for any field that isn't present in the document. Keep dates in whatever format the document uses (e.g. \"Sept 2024\", \"2021-01\", \"Present\").",
-            },
-          ],
-        },
-      ],
-      output_config: { format: zodOutputFormat(CvExtractionSchema) },
-    });
-
-    if (!response.parsed_output) {
-      return { status: "error", message: "Claude couldn't extract structured data from this PDF." };
-    }
-    extracted = response.parsed_output;
+    extracted = await parseCvPdf(buffer);
   } catch (error) {
     const message =
-      error instanceof Error ? error.message : "Unknown error while analyzing the PDF.";
+      error instanceof Error ? error.message : "Unknown error while parsing the PDF.";
     return { status: "error", message };
+  }
+
+  if (!extracted.fullName && !extracted.email) {
+    return {
+      status: "error",
+      message:
+        "Couldn't recognize this PDF's layout. This parser is tuned to one specific résumé template — try a differently-formatted PDF, or fill in the profile manually.",
+    };
   }
 
   const profileData = {

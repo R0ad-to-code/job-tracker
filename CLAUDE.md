@@ -3,7 +3,7 @@
 Local, single-user Next.js app for tracking PM/Dev job applications. Full spec: [SPEC.md](./SPEC.md). Build order: [PLAN.md](./PLAN.md).
 
 ## Stack
-Next.js (App Router) + TypeScript + Tailwind + Prisma/SQLite. No auth — everything runs on localhost, data in `data/app.db`. One deliberate exception to "no external services": the "Import from PDF" feature on `/cv` calls the Claude API (`@anthropic-ai/sdk`, `ANTHROPIC_API_KEY` in `.env`) to extract structured profile data from an uploaded CV PDF. Every other feature works fully offline.
+Next.js (App Router) + TypeScript + Tailwind + Prisma/SQLite. No auth, no external services — everything runs on localhost, data in `data/app.db`. The "Import from PDF" feature on `/cv` (`app/cv/pdf-parser.ts`) parses an uploaded CV PDF entirely locally via `unpdf` — it's a deterministic parser tuned to one specific résumé template (position/font-size based, not a generic resume parser), not an AI call.
 
 ## Conventions
 - Server Actions for mutations, not a separate API layer, unless a route handler is needed for file upload/download.

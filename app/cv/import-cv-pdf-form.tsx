@@ -27,8 +27,8 @@ export default function ImportCvPdfForm() {
     <div className="rounded-md border border-border bg-surface p-4">
       <h2 className="text-sm font-medium text-muted">Import from PDF</h2>
       <p className="mt-1 text-sm text-muted">
-        Upload a CV PDF — Claude reads it and fills in the profile fields below. This overwrites
-        your current profile.
+        Upload a CV PDF matching your résumé template and it fills in the profile fields below,
+        parsed locally — no data leaves this machine. This overwrites your current profile.
       </p>
       <form
         action={formAction}
