@@ -7,10 +7,10 @@ export default async function PlatformsPage() {
   return (
     <div>
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Platforms</h1>
+        <h1 className="text-title font-semibold">Platforms</h1>
         <Link
           href="/platforms/new"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+          className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           New platform
         </Link>

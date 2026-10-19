@@ -24,24 +24,24 @@ export default async function CvVersionDetailPage(
           <Link href="/cv" className="text-sm text-muted transition-colors hover:text-primary">
             ← Back to CV / Info
           </Link>
-          <h1 className="mt-2 text-2xl font-semibold">{version.label}</h1>
+          <h1 className="mt-2 text-title font-semibold">{version.label}</h1>
         </div>
         <DeleteCvVersionButton id={version.id} />
       </div>
 
       <section>
-        <h2 className="text-lg font-medium">PDF</h2>
+        <h2 className="text-xl font-semibold">PDF</h2>
         <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
           {version.filePath ? (
             <>
               <a
                 href={`/cv/versions/${version.id}/download`}
-                className="rounded-md border border-border px-3 py-1.5 font-medium text-foreground transition-colors hover:bg-border/40"
+                className="rounded-md border border-border px-3 py-1.5 font-medium text-foreground transition-colors hover:bg-neutral-soft"
               >
                 Download PDF
               </a>
               {stale && (
-                <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
+                <span className="inline-flex items-center rounded-full bg-warning-soft px-2.5 py-0.5 text-xs font-medium text-warning-soft-foreground">
                   Stale — source changed since last compile
                 </span>
               )}
@@ -57,7 +57,7 @@ export default async function CvVersionDetailPage(
         </div>
 
         {version.compileError && (
-          <pre className="mt-3 max-h-48 overflow-auto whitespace-pre-wrap rounded-md border border-red-300 bg-red-50 p-3 text-xs text-red-800">
+          <pre className="mt-3 max-h-48 overflow-auto whitespace-pre-wrap rounded-md border border-danger/30 bg-danger-soft p-3 font-mono text-xs text-danger-soft-foreground">
             {version.compileError}
           </pre>
         )}
@@ -75,7 +75,7 @@ export default async function CvVersionDetailPage(
           />
           <button
             type="submit"
-            className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
+            className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-neutral-soft"
           >
             Upload PDF
           </button>
@@ -83,7 +83,7 @@ export default async function CvVersionDetailPage(
       </section>
 
       <section>
-        <h2 className="text-lg font-medium">Details &amp; LaTeX source</h2>
+        <h2 className="text-xl font-semibold">Details &amp; LaTeX source</h2>
         <div className="mt-3">
           <CvVersionEditor version={version} />
         </div>

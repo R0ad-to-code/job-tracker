@@ -7,12 +7,12 @@ export default async function NewTodoPage() {
 
   return (
     <div className="max-w-lg">
-      <h1 className="text-2xl font-semibold">New ToDo</h1>
+      <h1 className="text-title font-semibold">New ToDo</h1>
       <form action={createTodo} className="mt-6 space-y-4">
         <TodoFields applications={applications} />
         <button
           type="submit"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+          className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           Create ToDo
         </button>

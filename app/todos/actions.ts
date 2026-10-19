@@ -41,6 +41,7 @@ export async function createTodo(formData: FormData) {
 
   await prisma.todo.create({ data: input });
 
+  revalidatePath("/");
   revalidatePath("/todos");
   if (input.applicationId) revalidatePath(`/applications/${input.applicationId}`);
   redirect("/todos");
@@ -63,6 +64,7 @@ export async function createTodoForApplication(applicationId: string, formData: 
   });
 
   revalidatePath(`/applications/${applicationId}`);
+  revalidatePath("/");
   revalidatePath("/todos");
 }
 
@@ -73,6 +75,7 @@ export async function updateTodo(id: string, formData: FormData) {
 
   await prisma.todo.update({ where: { id }, data: input });
 
+  revalidatePath("/");
   revalidatePath("/todos");
   if (previous?.applicationId) revalidatePath(`/applications/${previous.applicationId}`);
   if (input.applicationId && input.applicationId !== previous?.applicationId) {
@@ -87,6 +90,7 @@ export async function toggleTodoDone(id: string) {
 
   await prisma.todo.update({ where: { id }, data: { done: !todo.done } });
 
+  revalidatePath("/");
   revalidatePath("/todos");
   if (todo.applicationId) revalidatePath(`/applications/${todo.applicationId}`);
 }
@@ -96,6 +100,7 @@ export async function deleteTodo(id: string) {
 
   await prisma.todo.delete({ where: { id } });
 
+  revalidatePath("/");
   revalidatePath("/todos");
   if (todo?.applicationId) revalidatePath(`/applications/${todo.applicationId}`);
   redirect("/todos");

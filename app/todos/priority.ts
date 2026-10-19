@@ -9,9 +9,9 @@ export const PRIORITY_LABELS: Record<Priority, string> = {
 };
 
 const PRIORITY_BADGE_STYLES: Record<Priority, string> = {
-  LOW: "bg-border/60 text-muted",
-  MEDIUM: "bg-indigo-100 text-indigo-800",
-  HIGH: "bg-red-100 text-red-800",
+  LOW: "bg-neutral-soft text-neutral-soft-foreground",
+  MEDIUM: "bg-primary-soft text-primary-soft-foreground",
+  HIGH: "bg-danger-soft text-danger-soft-foreground",
 };
 
 export function priorityBadgeClassName(priority: Priority) {

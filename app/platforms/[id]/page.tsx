@@ -13,7 +13,7 @@ export default async function PlatformDetailPage(props: PageProps<"/platforms/[i
   return (
     <div className="max-w-md space-y-6">
       <div className="flex items-start justify-between gap-4">
-        <h1 className="text-2xl font-semibold">{platform.name}</h1>
+        <h1 className="text-title font-semibold">{platform.name}</h1>
         <DeletePlatformButton id={platform.id} />
       </div>
 
@@ -21,7 +21,7 @@ export default async function PlatformDetailPage(props: PageProps<"/platforms/[i
         <PlatformFields defaultValues={platform} />
         <button
           type="submit"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+          className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           Save changes
         </button>

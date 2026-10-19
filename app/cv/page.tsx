@@ -16,7 +16,7 @@ export default async function CvPage() {
   return (
     <div className="max-w-3xl space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold">CV / Info</h1>
+        <h1 className="text-title font-semibold">CV / Info</h1>
         <p className="mt-2 text-muted">
           Structured profile, kept ready to copy into any application form.
         </p>
@@ -28,10 +28,10 @@ export default async function CvPage() {
 
       <section>
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-medium">CV versions</h2>
+          <h2 className="text-xl font-semibold">CV versions</h2>
           <Link
             href="/cv/versions/new"
-            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+            className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
           >
             New version
           </Link>
@@ -62,7 +62,7 @@ export default async function CvPage() {
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     {stale && (
-                      <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
+                      <span className="inline-flex items-center rounded-full bg-warning-soft px-2.5 py-0.5 text-xs font-medium text-warning-soft-foreground">
                         Stale
                       </span>
                     )}

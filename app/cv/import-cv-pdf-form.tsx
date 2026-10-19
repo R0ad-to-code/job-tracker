@@ -12,7 +12,7 @@ function SubmitButton({ confirming }: { confirming: boolean }) {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60 disabled:hover:bg-primary"
+      className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60 disabled:hover:bg-primary"
     >
       {pending ? "Analyzing…" : confirming ? "Confirm — overwrite profile" : "Analyze PDF"}
     </button>
@@ -50,7 +50,7 @@ export default function ImportCvPdfForm() {
         />
         <SubmitButton confirming={confirming} />
         {confirming && (
-          <span className="text-sm text-amber-700">
+          <span className="text-sm text-warning-soft-foreground">
             This will overwrite your saved profile — click again to confirm.
           </span>
         )}
@@ -59,7 +59,7 @@ export default function ImportCvPdfForm() {
         <p className="mt-2 text-sm text-danger">{state.message}</p>
       )}
       {state.status === "success" && (
-        <p className="mt-2 text-sm text-green-700">{state.message}</p>
+        <p className="mt-2 text-sm text-success-soft-foreground">{state.message}</p>
       )}
     </div>
   );

@@ -43,10 +43,10 @@ export default async function TodosPage(props: PageProps<"/todos">) {
   return (
     <div>
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">ToDos</h1>
+        <h1 className="text-title font-semibold">ToDos</h1>
         <Link
           href="/todos/new"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+          className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           New ToDo
         </Link>
@@ -60,7 +60,7 @@ export default async function TodosPage(props: PageProps<"/todos">) {
             className={`rounded-md px-3 py-1.5 text-sm font-medium ${
               filter === key
                 ? "bg-primary text-primary-foreground"
-                : "border border-border text-muted transition-colors hover:bg-border/40"
+                : "border border-border text-muted transition-colors hover:bg-neutral-soft"
             }`}
           >
             {FILTER_LABELS[key]}

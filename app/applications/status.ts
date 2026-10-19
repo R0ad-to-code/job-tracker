@@ -28,17 +28,14 @@ export const ROLE_TYPE_LABELS: Record<RoleType, string> = {
 };
 
 const STATUS_BADGE_STYLES: Record<Status, string> = {
-  WISHLIST: "bg-border/60 text-muted",
-  APPLIED: "bg-indigo-100 text-indigo-800",
-  PHONE_SCREEN:
-    "bg-purple-100 text-purple-800",
-  INTERVIEW:
-    "bg-amber-100 text-amber-800",
-  TECHNICAL_TEST:
-    "bg-amber-100 text-amber-800",
-  OFFER: "bg-green-100 text-green-800",
-  REJECTED: "bg-red-100 text-red-800",
-  WITHDRAWN: "bg-border/60 text-muted",
+  WISHLIST: "bg-neutral-soft text-neutral-soft-foreground",
+  APPLIED: "bg-primary-soft text-primary-soft-foreground",
+  PHONE_SCREEN: "bg-secondary-soft text-secondary-soft-foreground",
+  INTERVIEW: "bg-warning-soft text-warning-soft-foreground",
+  TECHNICAL_TEST: "bg-warning-soft text-warning-soft-foreground",
+  OFFER: "bg-success-soft text-success-soft-foreground",
+  REJECTED: "bg-danger-soft text-danger-soft-foreground",
+  WITHDRAWN: "bg-neutral-soft text-neutral-soft-foreground",
 };
 
 export function statusBadgeClassName(status: Status) {

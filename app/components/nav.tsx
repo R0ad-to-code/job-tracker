@@ -15,9 +15,14 @@ export default function Nav() {
   const pathname = usePathname();
 
   return (
-    <nav className="border-b border-border">
-      <div className="mx-auto flex max-w-5xl items-center gap-1 px-4 py-3">
-        <span className="mr-4 font-semibold text-foreground">Job Tracker</span>
+    <nav className="border-b border-border bg-surface">
+      <div className="mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto px-4 py-2 sm:px-6">
+        <Link
+          href="/"
+          className="mr-4 shrink-0 font-display text-base font-semibold text-foreground"
+        >
+          Job Tracker
+        </Link>
         {LINKS.map(({ href, label }) => {
           const isActive =
             href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -25,10 +30,11 @@ export default function Nav() {
             <Link
               key={href}
               href={href}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+              aria-current={isActive ? "page" : undefined}
+              className={`inline-flex min-h-11 shrink-0 items-center rounded-md px-3 text-sm font-medium transition-colors ${
                 isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted hover:bg-border/40 hover:text-foreground"
+                  ? "bg-primary-soft text-primary-soft-foreground"
+                  : "text-muted hover:bg-neutral-soft hover:text-foreground"
               }`}
             >
               {label}

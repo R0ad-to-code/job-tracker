@@ -68,6 +68,7 @@ export async function createApplication(formData: FormData) {
     },
   });
 
+  revalidatePath("/");
   revalidatePath("/applications");
   revalidatePath("/platforms");
   redirect(`/applications/${application.id}`);
@@ -78,6 +79,7 @@ export async function updateApplication(id: string, formData: FormData) {
 
   await prisma.application.update({ where: { id }, data: input });
 
+  revalidatePath("/");
   revalidatePath("/applications");
   revalidatePath(`/applications/${id}`);
   revalidatePath("/platforms");
@@ -101,12 +103,14 @@ export async function changeApplicationStatus(id: string, formData: FormData) {
   });
 
   revalidatePath(`/applications/${id}`);
+  revalidatePath("/");
   revalidatePath("/applications");
 }
 
 export async function deleteApplication(id: string) {
   await prisma.application.delete({ where: { id } });
 
+  revalidatePath("/");
   revalidatePath("/applications");
   redirect("/applications");
 }

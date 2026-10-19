@@ -240,7 +240,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
 
       <section>
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-medium">Experience</h2>
+          <h2 className="text-xl font-semibold">Experience</h2>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -250,7 +250,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   { title: "", company: "", startDate: "", endDate: "", bullets: "" },
                 ])
               }
-              className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
+              className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-neutral-soft"
             >
               Add experience
             </button>
@@ -330,7 +330,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
 
       <section>
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-medium">Education</h2>
+          <h2 className="text-xl font-semibold">Education</h2>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -340,7 +340,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
                   { school: "", degree: "", startDate: "", endDate: "" },
                 ])
               }
-              className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
+              className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-neutral-soft"
             >
               Add education
             </button>
@@ -410,7 +410,7 @@ export default function CvProfileForm({ profile }: { profile: CvProfile }) {
 
       <button
         type="submit"
-        className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+        className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
       >
         Save profile
       </button>

@@ -17,7 +17,7 @@ export default async function TodoDetailPage(props: PageProps<"/todos/[id]">) {
   return (
     <div className="max-w-lg space-y-6">
       <div className="flex items-start justify-between gap-4">
-        <h1 className="text-2xl font-semibold">{todo.title}</h1>
+        <h1 className="text-title font-semibold">{todo.title}</h1>
         <DeleteTodoButton id={todo.id} />
       </div>
 
@@ -34,7 +34,7 @@ export default async function TodoDetailPage(props: PageProps<"/todos/[id]">) {
         />
         <button
           type="submit"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+          className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           Save changes
         </button>

@@ -24,7 +24,7 @@ export default function CopyButton({
           // Clipboard API unavailable (e.g. insecure context) — nothing to fall back to.
         }
       }}
-      className="shrink-0 rounded-md border border-border px-2 py-1 text-xs font-medium text-muted transition-colors hover:bg-border/40 hover:text-foreground"
+      className="shrink-0 rounded-md border border-border px-2 py-1 text-xs font-medium text-muted transition-colors hover:bg-neutral-soft hover:text-foreground"
     >
       {copied ? "Copied" : label}
     </button>

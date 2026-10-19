@@ -33,7 +33,7 @@ export default function DeleteApplicationButton({ id }: { id: string }) {
       <button
         type="button"
         onClick={() => setConfirming(false)}
-        className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
+        className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-neutral-soft"
       >
         Cancel
       </button>

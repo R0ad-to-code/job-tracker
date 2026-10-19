@@ -81,10 +81,10 @@ export default async function ApplicationsPage(props: PageProps<"/applications">
   return (
     <div>
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Applications</h1>
+        <h1 className="text-title font-semibold">Applications</h1>
         <Link
           href="/applications/new"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+          className="inline-flex min-h-11 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
         >
           New application
         </Link>
@@ -173,7 +173,7 @@ export default async function ApplicationsPage(props: PageProps<"/applications">
         </div>
         <button
           type="submit"
-          className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-border/40"
+          className="inline-flex min-h-11 items-center justify-center rounded-md border border-border bg-surface px-4 text-sm font-medium text-foreground transition-colors hover:bg-neutral-soft"
         >
           Apply
         </button>
@@ -207,7 +207,7 @@ export default async function ApplicationsPage(props: PageProps<"/applications">
               {applications.map((application) => (
                 <tr
                   key={application.id}
-                  className="border-b border-border last:border-0 transition-colors hover:bg-border/20"
+                  className="border-b border-border last:border-0 transition-colors hover:bg-neutral-soft/60"
                 >
                   <td className="py-2 pr-4">
                     <Link
